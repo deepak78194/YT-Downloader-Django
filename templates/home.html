@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>YT-Downloader</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<!-- nav bar start here -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <p class="navbar-brand">YouTube Vedio Downloader</p>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+</nav>
+<!-- nav bar end here -->
+
+<!-- container start here -->
+<div class="container">
+
+    <br><br>
+    <center><h1> Paste your YouTube Video Link Here </h1></center>
+    <!-- form start here -->
+    <form method="post">
+        {% csrf_token %}
+        <br>
+        <div class="form-group">
+            <input name="ylink" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                   placeholder="Enter Your Selected Youtube Video Link.">
+            <small id="emailHelp" class="form-text text-muted"></small>
+        </div>
+        <br>
+        <center>
+            <button type="submit" class="btn btn-primary" >Submit</button>
+            <a href="" class="btn btn-primary" style="margin-left: 20px">Refresh</a>
+        </center>
+    </form>
+
+    <!-- form end here -->
+
+    {% if yobj %}
+
+        <strong><h1 style="text-align: center; margin-bottom: 30px; margin-top: 50px;">
+            {{ yobj.title }}
+        </h1>
+        </strong>
+
+        <div class="col"
+             style="color: white; text-align: center; margin-top: 30px; color: black; margin-top: 20px; margin-bottom: 20px;">
+            <i class="fa fa-eye" style="margin-right: 10px; font-size: 20px; color: black;"></i>{{ yobj.viewcount }}
+            <i class="fa fa-star-o"
+               style="margin-right: 10px; margin-left: 30px; font-size: 20px; color: black;"></i>{{ yobj.rating|floatformat }}
+        </div>
+
+        <div class="embed-responsive embed-responsive-21by9">
+            <iframe class="embed-responsive-item" src="{{ embedlink }}"></iframe>
+        </div>
+
+        <table class="table" style="margin-top: 30px; margin-bottom: 50px; color: black;">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">quality</th>
+                <th scope="col">File Size</th>
+                <th scope="col">Download</th>
+            </tr>
+            </thead>
+            {% for i in yobj.streams %}
+                <tbody style=" color: black;">
+                <tr>
+                    <th scope="row">{{ i.quality }}</th>
+                    <td>{{ i.get_filesize|filesizeformat }}</td>
+                    <td><a href="{{ i.url }}" target="new"><strong
+                            style="color: #fc0039;">Click Download</strong></a></td>
+                </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+
+        <table class="table" style="margin-top: 30px; margin-bottom: 50px; color: black;">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">quality</th>
+                <th scope="col">File Size</th>
+                <th scope="col">Download</th>
+            </tr>
+            </thead>
+            {% for i in yobj.audiostreams %}
+                <tbody style=" color: black;">
+                <tr>
+                    <th scope="row">{{ i.quality }}</th>
+                    <td>{{ i.get_filesize|filesizeformat }}</td>
+                    <td><a href="{{ i.url }}" target="new"><strong
+                            style="color: #fc0039;">Click Download</strong></a></td>
+                </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+
+
+
+    {% endif %}
+
+
+</div>
+
+<!-- container end here -->
+
+
+
+</body>
+</html>
